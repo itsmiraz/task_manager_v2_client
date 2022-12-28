@@ -1,12 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
+const taskss = {
+    name: 'miraj',
+    details:'hello'
+}
+
+
 export const taskSlice = createSlice({
     name: 'tasks',
-    initialState: { value: [] },
+    initialState: { value: taskss },
     reducers: {
-        addtask: (state, action) => {
-            
-        }
+        
     }
 
 })
+
+export default taskSlice.reducer;

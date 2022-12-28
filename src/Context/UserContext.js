@@ -1,10 +1,11 @@
 import React from 'react';
 import { createContext } from 'react';
-import { createUserWithEmailAndPassword, getAuth, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth,  GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import app from '../Firebase/firebase.init.config';
-// import app from '../Firebase/firebase.init';
+import { useQuery } from '@tanstack/react-query';
+import LoadingAnimation from '../Components/LoadingAnimation/LoadingAnimation';
 
 export const AuthContext = createContext()
 
@@ -16,7 +17,6 @@ const UserContext = ({ children }) => {
 
 
     const googleProvider = new GoogleAuthProvider();
-    const githubProvider = new GithubAuthProvider();
 
     const signUp = (email, password) => {
         setLoading(true)
@@ -33,16 +33,19 @@ const UserContext = ({ children }) => {
         setLoading(false)
         return signInWithEmailAndPassword(auth, email, password)
     }
-    const githubSingIn = () => {
-        setLoading(true)
-        return signInWithPopup(auth, githubProvider)
-    }
+  
 
     const setuserProfile = (profile) => {
         setLoading(true)
         return updateProfile(auth.currentUser, profile)
     }
 
+
+
+
+   
+
+    
 
     useEffect(() => {
 
@@ -56,7 +59,7 @@ const UserContext = ({ children }) => {
 
     },)
 
-
+   
     const logOut = () => {
         setLoading(true)
         return signOut(auth)
@@ -65,8 +68,6 @@ const UserContext = ({ children }) => {
     const authInfo = {
         user,
         signUp,
-
-        githubSingIn,
         loading,
         setuserProfile,
         logOut,
