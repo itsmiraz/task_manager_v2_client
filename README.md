@@ -2,15 +2,15 @@
 <img src="https://i.ibb.co/Bzm0FQ8/Capturfsdfsdfdsfe.jpg" alt="Alt text" title="Optional title">
 
 
-#TASK MANAGER
+# TASK MANAGER
 
--This site was built using [Live Site](https://task-manager-v2-81bdb.web.app/).
+- This site was built using [Live Site](https://task-manager-v2-81bdb.web.app/).
 
 
--Tech Used
+- Technology Used
 
-##Front End
-React, React-Redux, Redux Tookit, Axios, Tailwind, Firebase etc
+## Front End
+React, React-Redux(new), Redux Tookit(new), Axios, Tailwind, Firebase etc
 
-##Backend
+## Backend
 Node.js, Mongo DB, Express
