@@ -3,7 +3,7 @@ import { HashLoader } from 'react-spinners';
 
 const LoadingAnimation = () => {
     return (
-        <div className='h-[500px] flex justify-center items-center'>
+        <div className='h-screen flex justify-center items-center'>
             <HashLoader color="#36a1d6" />
         </div>
     );

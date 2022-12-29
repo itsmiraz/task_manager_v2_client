@@ -97,7 +97,7 @@ const AddTask = () => {
         <div>
             <h1 className='text-start font-semibold text-xl my-4 mx-10 text-white'>Add Task</h1>
             <div>
-                <form onSubmit={handleform} className='w-96 bg-gray-800 p-4 shadow-2xl mx-auto flex justify-center flex-col' action="">
+                <form onSubmit={handleform} className='w-full md:w-96 bg-gray-800 p-4 shadow-2xl mx-auto flex justify-center flex-col' action="">
                     <div className=' relative flex flex-col justify-center '>
 
                         {

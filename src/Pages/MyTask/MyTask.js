@@ -187,7 +187,7 @@ const MyTask = () => {
                                                     {
                                                         edittask === task._id ?
                                                             <>
-                                                                <input name='title' type="text" className='text-gray-800 py-1 rounded' defaultValue={task.title} />
+                                                                <input name='title' type="text" className='text-gray-800 py-1 rounded overflow-hidden' defaultValue={task.title} />
                                                             </>
                                                             :
                                                             <>
@@ -202,14 +202,7 @@ const MyTask = () => {
                                                         <>
 
 
-                                                            <div className='flex item-center'>
-                                                                <button onClick={() => handleEditOpen(task._id)} className='px-4 ml-2 py-1 rounded text-gray-800 bg-white  '>
-                                                                    Cancel
-                                                                </button>
-
-
-
-                                                            </div>
+                                                           
 
                                                         </>
                                                         :
@@ -261,7 +254,7 @@ const MyTask = () => {
                                                                 <input onChange={setFileList} className='left-0 opacity-0 absolute top-0 w-full bg-red-400' type="file" />
                                                             </div>
 
-                                                            <textarea name='details' type="text" className='text-gray-800 block my-2 md:w-full' defaultValue={task.details} />
+                                                            <textarea name='details' type="text" className='text-gray-800 block my-2 w-full md:w-full' defaultValue={task.details} />
 
                                                         </>
                                                         :
@@ -278,9 +271,18 @@ const MyTask = () => {
                                                     {
                                                         edittask === task._id ?
                                                             <>
+                                                                 <div className='flex justify-between item-center'>
+                                                               
+
+
                                                                 <button type='submit' className='px-4  py-1 rounded text-gray-800 bg-white  '>
                                                                     Save
                                                                 </button>
+                                                                <button onClick={() => handleEditOpen(task._id)} className='px-4 ml-2 py-1 rounded text-gray-800 bg-white  '>
+                                                                    Cancel
+                                                                </button>
+
+                                                               </div>
                                                             </>
                                                             :
                                                             <>
