@@ -8,7 +8,7 @@
 - [Server](https://github.com/itsmiraz/task_manager_v2_server)
 
 
-# `#0969DA`  Technology Used
+# > Technology Used
 
 ## Front End
 React, React-Redux(new), Redux Tookit(new), Axios, Tailwind, Firebase etc
