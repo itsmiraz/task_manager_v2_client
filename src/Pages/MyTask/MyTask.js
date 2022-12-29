@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -9,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import LoadingAnimation from '../../Components/LoadingAnimation/LoadingAnimation';
 import { AuthContext } from '../../Context/UserContext';
 import { gettasks } from '../../Features/Tasks';
+
+
 const MyTask = () => {
     const { user } = useContext(AuthContext)
     const [undone, setundone] = useState([])
@@ -25,7 +26,7 @@ const MyTask = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(gettasks(user.email));
-    }, [dispatch,user.email]);
+    }, [dispatch, user.email]);
     
 
     useEffect(() => {
@@ -34,6 +35,8 @@ const MyTask = () => {
 
     }, [tasks])
 
+
+    // IMAGE uPLOAD
     useEffect(() => {
         if (fileList?.target?.files[0]) {
 
@@ -79,25 +82,27 @@ const MyTask = () => {
 
     const handledelete = (id) => {
         console.log(id);
-        fetch(`http://localhost:5000/task/${id}`, {
+        fetch(`https://task-manager-v2-server.vercel.app/task/${id}`, {
             method: 'DELETE',
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data)
                 toast.error('Deleted')
-                // refetch()
+            
+                    dispatch(gettasks(user.email));
+             
             })
     }
 
 
     const handleDone = (id) => {
-        fetch(`http://localhost:5000/donetask/${id}`, {
+        fetch(`https://task-manager-v2-server.vercel.app/donetask/${id}`, {
             method: 'PUT'
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 toast.success('Great')
                 navigate('/completed')
                 // refetch()
@@ -122,7 +127,7 @@ const MyTask = () => {
         e.preventDefault()
         const form = e.target
         const title = form.title.value;
-        const details = form.details.value;
+        const details = form?.details?.value;
         const image = previewImg;
         const updateDoc = {
             title,
@@ -130,7 +135,7 @@ const MyTask = () => {
             image
 
         }
-        fetch(`http://localhost:5000/edittask/${edittask}`, {
+        fetch(`https://task-manager-v2-server.vercel.app/edittask/${edittask}`, {
             method: "PUT",
             headers: {
                 'content-type':'application/json'
@@ -140,7 +145,7 @@ const MyTask = () => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                // refetch()
+               
                 setEdittask('')
         })
 
@@ -178,7 +183,7 @@ const MyTask = () => {
                                             <h2 className='flex items-center px-2'>
 
                                                 <span>{i + 1}.</span>
-                                                <button onClick={() => accordianOpenClose(task._id)} type="button" className="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500   dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 " data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
+                                                <p onClick={() => accordianOpenClose(task._id)} type="button" className="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500   dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 " data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
                                                     {
                                                         edittask === task._id ?
                                                             <>
@@ -190,7 +195,7 @@ const MyTask = () => {
                                                                 <span className='text-white'>{task.title}</span>
                                                             </>
                                                     }
-                                                </button>
+                                                </p>
 
                                                 {
                                                     edittask === task._id ?
@@ -216,9 +221,9 @@ const MyTask = () => {
                                                                 </svg>
 
                                                             </button>
-                                                            <button onClick={() => handleDone(task._id)} className='px-4 ml-2 py-1 rounded text-gray-800 bg-white  '>
+                                                            <p onClick={() => handleDone(task._id)} className='px-4 ml-2 py-1 rounded text-gray-800 bg-white  '>
                                                                 Completed
-                                                            </button>
+                                                            </p>
                                                         </>
 
                                                 }
@@ -280,7 +285,7 @@ const MyTask = () => {
                                                             :
                                                             <>
                                                             
-                                                            <button className='px-4 py-1 bg-red-600 text-white' onClick={() => handledelete(task._id)}>Delete</button>
+                                                            <p className='px-4 py-1 bg-red-600 text-white' onClick={() => handledelete(task._id)}>Delete</p>
                                                             
                                                             </>
                                                     }

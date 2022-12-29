@@ -23,14 +23,7 @@ const Completed = () => {
         dispatch(gettasks(user.email));
     }, [dispatch,user.email]);
     
-    // const { data: tasks = [], isLoading, refetch } = useQuery({
-    //     queryKey: ['task'],
-    //     queryFn: async () => {
-    //         const res = await fetch(`http://localhost:5000/tasks?email=${user.email}`)
-    //         const data = res.json()
-    //         return data
-    //     }
-    // })
+    
     useEffect(() => {
 
         const undoneTask = tasks?.filter(task => task.done)
@@ -57,25 +50,25 @@ const Completed = () => {
 
     const handledelete = (id) => {
         console.log(id);
-        fetch(`http://localhost:5000/task/${id}`, {
+        fetch(`https://task-manager-v2-server.vercel.app/task/${id}`, {
             method: 'DELETE',
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data)
                 toast.error('Deleted')
-                // refetch()
+                dispatch(gettasks(user.email));
             })
     }
 
     const handleunDone = (id) => {
-        fetch(`http://localhost:5000/notcompletetask/${id}`, {
+        fetch(`https://task-manager-v2-server.vercel.app/notcompletetask/${id}`, {
             method: 'PUT'
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                toast.success('Great')
+                // console.log(data);
+                toast.success('Moved To Not Completed')
                 navigate('/')
                 // refetch()
             })

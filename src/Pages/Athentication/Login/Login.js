@@ -81,7 +81,7 @@ const Login = () => {
   
     return (
         <div className='flex justify-center px-4 mb-16 py-4 md:py-10'>
-            <div className="w-full bg-gray-900 max-w-md border mt-10 border-blue-500 shadow-lg drop-shadow-2xl p-8 space-y-3 rounded bg-white-900 text-gray-900">
+            <div className="w-full bg-gray-900 max-w-md border mt-2 border-blue-500 shadow-lg drop-shadow-2xl p-8 space-y-3 rounded bg-white-900 text-gray-900">
                 <h1 className="text-2xl text-blue-600 font-bold text-center">Login</h1>
                 <form onSubmit={handleSubmit} noValidate="" action="" className="space-y-6 ng-untouched ng-pristine ng-valid">
                     <div className="space-y-1 text-sm">

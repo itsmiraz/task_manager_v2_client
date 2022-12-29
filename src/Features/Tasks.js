@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
 export const gettasks = createAsyncThunk(
     "gettasks",
     async (object, { getState, rejectWithValue }) => {
         // console.log(object)
         // console.log(getState());
       try {
-        const { data } = await axios.get(
-          `http://localhost:5000/tasks?email=${object}`
+        const { data ,refetch } = await axios.get(
+          `https://task-manager-v2-server.vercel.app/tasks?email=${object}`
         );
         return data;
       } catch (error) {
@@ -16,6 +15,8 @@ export const gettasks = createAsyncThunk(
       }
     }
   );
+
+
 
 export const taskSlice = createSlice({
     name: 'tasks',
@@ -25,7 +26,9 @@ export const taskSlice = createSlice({
         isSuccess: false,
         message: "",
     },
-    reducers: {},
+    reducers: {
+       
+    },
     extraReducers: {
         [gettasks.pending]: (state, action) => {
           state.loading = true;
