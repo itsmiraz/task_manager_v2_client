@@ -4,10 +4,11 @@
 
 # TASK MANAGER
 
-- This site was built using [Live Site](https://task-manager-v2-81bdb.web.app/).
+- [Live Site](https://task-manager-v2-81bdb.web.app/).
+- [Server](https://github.com/itsmiraz/task_manager_v2_server)
 
 
-- Technology Used
+# `#0969DA`  Technology Used
 
 ## Front End
 React, React-Redux(new), Redux Tookit(new), Axios, Tailwind, Firebase etc
