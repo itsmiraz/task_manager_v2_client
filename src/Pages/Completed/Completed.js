@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 import { toast } from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LoadingAnimation from '../../Components/LoadingAnimation/LoadingAnimation';
 import { AuthContext } from '../../Context/UserContext';
+import { gettasks } from '../../Features/Tasks';
 
 const Completed = () => {
  
@@ -14,15 +16,21 @@ const Completed = () => {
     const [undone, setundone] = useState([])
     const navigate = useNavigate()
 
-
-    const { data: tasks = [], isLoading, refetch } = useQuery({
-        queryKey: ['task'],
-        queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/tasks?email=${user.email}`)
-            const data = res.json()
-            return data
-        }
-    })
+    const {data:tasks,loading} = useSelector((state) => state.tasks)
+  
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(gettasks(user.email));
+    }, [dispatch,user.email]);
+    
+    // const { data: tasks = [], isLoading, refetch } = useQuery({
+    //     queryKey: ['task'],
+    //     queryFn: async () => {
+    //         const res = await fetch(`http://localhost:5000/tasks?email=${user.email}`)
+    //         const data = res.json()
+    //         return data
+    //     }
+    // })
     useEffect(() => {
 
         const undoneTask = tasks?.filter(task => task.done)
@@ -56,7 +64,7 @@ const Completed = () => {
             .then(data => {
                 console.log(data)
                 toast.error('Deleted')
-                refetch()
+                // refetch()
             })
     }
 
@@ -69,11 +77,11 @@ const Completed = () => {
                 console.log(data);
                 toast.success('Great')
                 navigate('/')
-                refetch()
+                // refetch()
             })
 
     }
-    if (isLoading) {
+    if (loading) {
     return <LoadingAnimation></LoadingAnimation>
 }
 

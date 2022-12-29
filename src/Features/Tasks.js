@@ -1,19 +1,46 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
-
-
-const taskss = {
-    name: 'miraj',
-    details:'hello'
-}
-
+export const gettasks = createAsyncThunk(
+    "gettasks",
+    async (object, { getState, rejectWithValue }) => {
+        // console.log(object)
+        // console.log(getState());
+      try {
+        const { data } = await axios.get(
+          `http://localhost:5000/tasks?email=${object}`
+        );
+        return data;
+      } catch (error) {
+        rejectWithValue(error.response);
+      }
+    }
+  );
 
 export const taskSlice = createSlice({
     name: 'tasks',
-    initialState: { value: taskss },
-    reducers: {
-        
-    }
+    initialState: {
+        data: [],
+        loading: false,
+        isSuccess: false,
+        message: "",
+    },
+    reducers: {},
+    extraReducers: {
+        [gettasks.pending]: (state, action) => {
+          state.loading = true;
+        },
+        [gettasks.fulfilled]: (state, { payload }) => {
+          state.loading = false;
+          state.data = payload;
+          state.isSuccess = true;
+        },
+        [gettasks.rejected]: (state, { payload }) => {
+          state.loading = false;
+          state.isSuccess = false;
+          state.message = "failed";
+        },
+      },
 
 })
 
