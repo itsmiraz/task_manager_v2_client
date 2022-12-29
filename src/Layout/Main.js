@@ -14,7 +14,7 @@ const Main = () => {
         <div>
             <Header></Header>
             <div className='  relative '>
-                <div className={`h-screen absolute top-[-15px] z-50 col-span-0 md:col-span-1 p-3 space-y-2 w-60 backdrop-blur-md ease-in duration-300 bg-white/10 text-gray-100 ${openMenu ? 'left-0': 'left-[-400px]'} `}>
+                <div className={`h-screen absolute top-[-15px] z-30 col-span-0 md:col-span-1 p-3 space-y-2 w-60 backdrop-blur-md ease-in duration-300 bg-white/10 text-gray-100 ${openMenu ? 'left-0': 'left-[-400px]'} `}>
                     <div className="flex items-center p-2 space-x-4">
                         <img src={user.photoURL} alt="" className="w-12 h-12 rounded-full bg-gray-500" />
                         <div>

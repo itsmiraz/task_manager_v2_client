@@ -170,9 +170,6 @@ const MyTask = () => {
                                 <p className='text-xl font-semibold'>
                                     You Dont Have Any Task Left
                                 </p>
-
-
-
                             </div>
                             :
                             <>
@@ -214,7 +211,7 @@ const MyTask = () => {
                                                                 </svg>
 
                                                             </button>
-                                                            <p onClick={() => handleDone(task._id)} className='px-4 ml-2 py-1 rounded text-gray-800 bg-white  '>
+                                                            <p onClick={() => handleDone(task._id)} className='px-4 hover:cursor-pointer  ml-2 py-1 rounded text-gray-800 bg-white  '>
                                                                 Completed
                                                             </p>
                                                         </>

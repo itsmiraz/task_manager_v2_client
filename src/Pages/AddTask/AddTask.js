@@ -7,7 +7,7 @@ import uploadimg from '../../assets/images/cloud-upload-regular-240.png'
 import { AuthContext } from '../../Context/UserContext';
 const AddTask = () => {
 
-    const { user,  } = useContext(AuthContext)
+    const { user, } = useContext(AuthContext)
     const imgHostKey = process.env.REACT_APP_imgbbKey
     const [animation, setanimation] = useState(false)
     const navigate = useNavigate()
@@ -26,6 +26,7 @@ const AddTask = () => {
             userEmail: user.email,
             details,
             done: false,
+            comments:[],
             image
         }
         fetch(`https://task-manager-v2-server.vercel.app/task`, {
@@ -41,7 +42,7 @@ const AddTask = () => {
                 form.reset()
                 setPreviewImg(undefined)
                 navigate('/')
-            
+
                 toast.success('Added')
             })
         console.log(task);
