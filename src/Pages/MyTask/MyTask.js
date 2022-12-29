@@ -10,8 +10,16 @@ import { AuthContext } from '../../Context/UserContext';
 const MyTask = () => {
     // const tasks = useSelector((state) => state.tasks.value)
     const { user } = useContext(AuthContext)
-    // console.log(tasks)
-    const { data: tasks=[],isLoading,refetch } = useQuery({
+    const [undone, setundone] = useState([])
+    const navigate = useNavigate()
+    const [open, setopen] = useState('')
+    const [edittask, setEdittask] = useState('')
+    const imgHostKey = process.env.REACT_APP_imgbbKey
+    const [animation, setanimation] = useState(false)
+    const [fileList, setFileList] = useState([]);
+    const [previewImg, setPreviewImg] = useState(undefined)
+
+    const { data: tasks = [], isLoading, refetch } = useQuery({
         queryKey: ['task'],
         queryFn: async () => {
             const res = await fetch(`http://localhost:5000/tasks?email=${user.email}`)
@@ -19,22 +27,49 @@ const MyTask = () => {
             return data
         }
     })
-    const [undone, setundone] = useState([])
-    const navigate = useNavigate()
 
-   
+
     useEffect(() => {
-        
-            const undoneTask = tasks.filter(task => !task.done)
-            console.log(undoneTask)
-    
-            setundone(undoneTask)
 
-       
+        const undoneTask = tasks.filter(task => !task.done)
+        console.log(undoneTask)
+
+        setundone(undoneTask)
+
+
     }, [tasks])
 
-    const [open, setopen] = useState('')
+    useEffect(() => {
+        if (fileList?.target?.files[0]) {
 
+            const filesize = fileList?.target?.files.item(0).size
+            const filemb = filesize / 1024
+            if (filemb > 500) {
+                toast.error('Please Upload a photo under 500kb')
+            }
+            else {
+
+                const image = fileList?.target?.files[0];
+                console.log(image)
+                setanimation(true)
+                const formData = new FormData();
+                formData.append('image', image);
+                const url = `https://api.imgbb.com/1/upload?key=${imgHostKey}`
+                fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(res => res.json())
+                    .then(imgData => {
+                        console.log(imgData)
+                        setPreviewImg(imgData?.data?.url)
+                        setanimation(false)
+                        // setSave(true)
+                    })
+            }
+        }
+
+    }, [fileList?.target?.files, imgHostKey])
 
     const accordianOpenClose = (id) => {
         if (id === open) {
@@ -73,57 +108,197 @@ const MyTask = () => {
                 refetch()
             })
 
+
+
     }
+
+    const handleEditOpen = (id) => {
+        if (id === edittask) {
+            setEdittask('')
+        }
+        else {
+            setEdittask(id)
+        }
+    }
+
+
+    const handleEditsave = e => {
+
+        e.preventDefault()
+        const form = e.target
+        const title = form.title.value;
+        const details = form.details.value;
+        const image = previewImg;
+        const updateDoc = {
+            title,
+            details,
+            image
+
+        }
+        fetch(`http://localhost:5000/edittask/${edittask}`, {
+            method: "PUT",
+            headers: {
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(updateDoc)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                refetch()
+                setEdittask('')
+        })
+
+
+    }
+
+
     if (isLoading) {
         return <LoadingAnimation></LoadingAnimation>
     }
+
+
 
     return (
         <section >
             <h1 className='text-start font-semibold text-xl my-4 mx-4 md:mx-10 text-white'>My Task</h1>
             <div>
-                {
-                    undone?.length === 0 ?
-                        <div className='flex justify-center items-center m-20'>
-                            <p className='text-xl font-semibold'>
-                                You Dont Have Any Task Left
-                            </p>
+                <div>
+                    {
+                        undone?.length === 0 ?
+                            <div className='flex justify-center items-center m-20'>
+                                <p className='text-xl font-semibold'>
+                                    You Dont Have Any Task Left
+                                </p>
 
 
 
-                        </div>
-                        :
-                        <>
+                            </div>
+                            :
+                            <>
 
-                            {
-                                undone?.map((task, i) =>
-                                    <div key={task._id} id="accordion-collapse" className=' md:w-[500px] mx-4 md:mx-10 my-2 bg-gray-900 font-semibold rounded-md' data-accordion="collapse">
-                                        <h2 className='flex items-center px-2'>
+                                {
+                                    undone?.map((task, i) =>
+                                        <form onSubmit={handleEditsave} key={task._id} id="accordion-collapse" className=' md:w-[500px] mx-4 md:mx-10 my-2 bg-gray-900 font-semibold rounded-md' data-accordion="collapse">
+                                            <h2 className='flex items-center px-2'>
 
-                                            <span>{i + 1}.</span>
-                                            <button onClick={() => accordianOpenClose(task._id)} type="button" className="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500   dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 " data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
-                                                <span className='text-white'>{task.title}</span>
-                                                {/* <svg data-accordion-icon className={`w-6 h-6 shrink-0 ${open === task._id ? 'rotate-180' : ' rotate-360 '}`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg> */}
-                                            </button>
-                                            <button onClick={() => handleDone(task._id)} className='px-4 py-1 rounded text-gray-800 bg-white  '>
-                                            Completed
-                                            </button>
-                                        </h2>
-                                        <div className={`${open === task._id ? '' : 'hidden'} bg-gray-800  rounded-md  duration-200 ease-in p-2 font-semibold`} aria-labelledby="accordion-collapse-heading-1">
-                                            <img src={task.image} alt="" />
-                                            <p className='bg-gray-700 my-2 p-2 w-full text-white font-normal text-sm shadow-lg rounded-md '>
+                                                <span>{i + 1}.</span>
+                                                <button onClick={() => accordianOpenClose(task._id)} type="button" className="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500   dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 " data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
+                                                    {
+                                                        edittask === task._id ?
+                                                            <>
+                                                                <input name='title' type="text" className='text-gray-800 py-1 rounded' defaultValue={task.title} />
+                                                            </>
+                                                            :
+                                                            <>
+
+                                                                <span className='text-white'>{task.title}</span>
+                                                            </>
+                                                    }
+                                                </button>
+
                                                 {
-                                                    task.details
-                                                }
-                                            </p>
-                                            <button className='px-4 py-1 bg-red-600 text-white' onClick={() => handledelete(task._id)}>Delete</button>
-                                        </div>
-                                    </div>
+                                                    edittask === task._id ?
+                                                        <>
 
-                                )
-                            }
-                        </>
-                }
+
+                                                            <div className='flex item-center'>
+                                                                <button onClick={() => handleEditOpen(task._id)} className='px-4 ml-2 py-1 rounded text-gray-800 bg-white  '>
+                                                                    Cancel
+                                                                </button>
+
+
+
+                                                            </div>
+
+                                                        </>
+                                                        :
+
+                                                        <>
+                                                            <button onClick={() => handleEditOpen(task._id)} className='text-white px-2'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                                </svg>
+
+                                                            </button>
+                                                            <button onClick={() => handleDone(task._id)} className='px-4 ml-2 py-1 rounded text-gray-800 bg-white  '>
+                                                                Completed
+                                                            </button>
+                                                        </>
+
+                                                }
+                                            </h2>
+                                            <div className={`${open === task._id ? '' : 'hidden'} bg-gray-800  rounded-md ease-in duration-300 p-2 font-semibold`} aria-labelledby="accordion-collapse-heading-1">
+                                                {
+                                                    animation ?
+                                                        <div className='w-full h-24 bg-gray-700 animate-pulse'>
+                                                        </div>
+                                                        :
+                                                        <>
+
+                                                            {
+                                                                previewImg ?
+                                                                    <>
+
+                                                                        <img src={previewImg} alt="" />
+
+                                                                    </>
+                                                                    :
+                                                                    <>
+
+                                                                        <img src={task.image} alt="" />
+
+                                                                    </>
+                                                            }
+                                                        </>
+                                                }
+
+                                                {
+                                                    edittask === task._id ?
+                                                        <>
+                                                            <div className='relative py-2'>
+                                                                <button className='text-gray-100 px-2 py-1 bg-gray-900 rounded'>Edit Image</button>
+                                                                <input onChange={setFileList} className='left-0 opacity-0 absolute top-0 w-full bg-red-400' type="file" />
+                                                            </div>
+
+                                                            <textarea name='details' type="text" className='text-gray-800 block my-2 md:w-full' defaultValue={task.details} />
+
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <p className='bg-gray-700 my-2 p-2 w-full text-white font-normal text-sm shadow-lg rounded-md '>
+                                                                {
+                                                                    task.details
+                                                                }
+                                                            </p>
+                                                        </>
+                                                }
+
+                                                <div>
+                                                    {
+                                                        edittask === task._id ?
+                                                            <>
+                                                                <button type='submit' className='px-4  py-1 rounded text-gray-800 bg-white  '>
+                                                                    Save
+                                                                </button>
+                                                            </>
+                                                            :
+                                                            <>
+                                                            
+                                                            <button className='px-4 py-1 bg-red-600 text-white' onClick={() => handledelete(task._id)}>Delete</button>
+                                                            
+                                                            </>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    )
+                                }
+                            </>
+                    }
+
+                </div>
 
             </div>
 

@@ -3,6 +3,7 @@ import AddTask from "../Pages/AddTask/AddTask";
 import Login from "../Pages/Athentication/Login/Login";
 import Register from "../Pages/Athentication/Register/Register";
 import Completed from "../Pages/Completed/Completed";
+import Error from "../Pages/Error/Error";
 import Private from "./Private/Private";
 
 const { createBrowserRouter } = require("react-router-dom");
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
             {
                 path: '/completed',
                 element:<Private><Completed></Completed></Private>
+            },
+            {
+                path: '*',
+                element:<Error></Error>
             }
         ]
         
@@ -41,6 +46,10 @@ export const router = createBrowserRouter([
             {
                 path: '/auht/register',
                 element:<Register></Register>
+            },
+            {
+                path: '*',
+                element:<Error></Error>
             }
         ]
     }
