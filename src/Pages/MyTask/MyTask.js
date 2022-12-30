@@ -160,7 +160,7 @@ const MyTask = () => {
 
 
     return (
-        <section >
+        <section className=' px-0 md:px-10'>
             <h1 className='text-start font-semibold text-xl my-4 mx-4 md:mx-10 text-white'>My Task</h1>
             <div>
                 <div>

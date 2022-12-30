@@ -119,7 +119,7 @@ const Completed = () => {
 
     return (
 
-        <div className='px-2'>
+        <div className='px-0 md:px-4'>
             <h1 className='text-start font-semibold text-xl my-4 mx-2 md:mx-10 text-white'>Completed</h1>
             <div>
 
@@ -193,7 +193,7 @@ const Completed = () => {
 
                                                 <div className='w-full bg-gray-700  rounded-md'>
                                                     {
-                                                        task?.comments.length !== 0 ?
+                                                        task?.comments ?
                                                             <>
                                                                 <p className='p-2'>{ task?.comments}</p>
                                                             

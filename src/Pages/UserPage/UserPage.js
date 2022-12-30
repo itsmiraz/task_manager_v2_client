@@ -33,7 +33,7 @@ const UserPage = () => {
             })
     }
     return (
-        <section>
+        <section className='px-0 md:px-10'>
             <div className='mx-4 transition-all my-4 md:mx-10'>
                 <p className='text-xl font-semibold text-white my-2'>Profile</p>
                 <img src={user?.photoURL} alt="" />

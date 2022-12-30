@@ -20,33 +20,27 @@ const Register = () => {
         e.preventDefault()
         const form = e.target;
         const name = form.name.value;
-        const photoURL = form.photourl.value;
+      
         const email = form.email.value;
         const password = form.password.value;
 
-        console.log(name, photoURL, email, password);
-        if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
-            setError('Please provide at least two uppercase');
-            return;
-        }
+        console.log(name, email, password);
+      
         if (password.length < 6) {
             setError('Please should be at least 6 characters.');
             return;
         }
-        if (!/(?=.*[!@#$&*])/.test(password)) {
-            setError('Please add at least one special character');
-            return;
-        }
+        
         setError('');
         signUp(email, password)
             .then(result => {
                 const user = result.user;
                 form.reset()
-                handleUserProfile(name, photoURL)
+                handleUserProfile(name)
                 setTimeout(() => {
                     navigate(frome, { replace: true })
 
-                }, 1000);
+                }, 300);
                 toast.success('Register SuccessFully')
                 console.log("🚀 ~ file: RegisterPage.js ~ line 21 ~ handleSubmit ~ user", user)
             })

@@ -14,9 +14,10 @@ const Main = () => {
         <div>
             <Header></Header>
             <div className='   '>
-                <div className={`h-screen absolute md:left-0 top-[63px] z-30 col-span-0 md:col-span-1 p-3 space-y-2 w-62 backdrop-blur-md ease-in duration-300 bg-white/10 text-gray-100 ${openMenu ? 'left-0' : 'left-[-400px]'} `}>
+                <div className={`h-screen absolute md:left-0 top-[63px] z-30 col-span-0 md:col-span-1 p-3 space-y-2 w-62  backdrop-blur-md ease-in duration-300 bg-white/10 text-gray-100 ${openMenu ? 'left-0' : 'left-[-400px]'} `}>
                     <div className="flex items-center p-2 space-x-4">
-                        <img src={user.photoURL} alt="" className="w-12 h-12 rounded-full bg-gray-500" />
+                        
+                        <img src={user?.photoURL ? `${user.photoURL}`:'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'} alt="" className="w-12 h-12 rounded-full bg-gray-500" />
                         <div>
                             <h2 className="text-lg font-semibold">{user.displayName}</h2>
                             <span className="flex items-center space-x-1">
@@ -89,7 +90,7 @@ const Main = () => {
                     <button
                         onClick={() => setopenMenu(!openMenu)}
                     >
-                        <label className=" absolute top-16 right-5 lg:hidden">
+                        <label className=" absolute top-20 right-5 lg:hidden">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 transition-all ${openMenu ? 'rotate-180' : 'rotate-0'}`}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
                             </svg>
