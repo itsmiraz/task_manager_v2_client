@@ -1,11 +1,9 @@
 import React from 'react';
 import { createContext } from 'react';
-import { createUserWithEmailAndPassword, getAuth,  GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth,  GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import app from '../Firebase/firebase.init.config';
-import { useQuery } from '@tanstack/react-query';
-import LoadingAnimation from '../Components/LoadingAnimation/LoadingAnimation';
 
 export const AuthContext = createContext()
 
@@ -40,12 +38,11 @@ const UserContext = ({ children }) => {
         return updateProfile(auth.currentUser, profile)
     }
 
+    const forgetPass = (email) => {
+        setLoading(true)
 
-
-
-   
-
-    
+       return  sendPasswordResetEmail(auth,email)
+    }
 
     useEffect(() => {
 
@@ -73,6 +70,7 @@ const UserContext = ({ children }) => {
         logOut,
         googleSginIn,
         signIn,
+        forgetPass,
         auth,
         setRoomDetails,
         roomDetails

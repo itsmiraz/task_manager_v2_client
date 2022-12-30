@@ -252,7 +252,6 @@ const MyTask = () => {
                                                             </div>
 
                                                             <textarea name='details' type="text" className='text-gray-800 block my-2 w-full md:w-full' defaultValue={task.details} />
-
                                                         </>
                                                         :
                                                         <>
@@ -284,7 +283,7 @@ const MyTask = () => {
                                                             :
                                                             <>
                                                             
-                                                            <p className='px-4 py-1 bg-red-600 text-white' onClick={() => handledelete(task._id)}>Delete</p>
+                                                            <p className='px-4 py-1 w-20  hover:cursor-pointer bg-red-600 text-white' onClick={() => handledelete(task._id)}>Delete</p>
                                                             
                                                             </>
                                                     }

@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import uploadimg from '../../assets/images/cloud-upload-regular-240.png'
 import { AuthContext } from '../../Context/UserContext';
 const AddTask = () => {
+    const [title, setTile] = useState('')
+    const [details, setDetails] = useState('')
 
     const { user, } = useContext(AuthContext)
     const imgHostKey = process.env.REACT_APP_imgbbKey
@@ -14,21 +16,23 @@ const AddTask = () => {
     const [fileList, setFileList] = useState([]);
     const [previewImg, setPreviewImg] = useState(undefined)
 
+   
+   
+
     const handleform = event => {
-        const image = previewImg
         event.preventDefault()
+        const image = previewImg
         console.log('submited')
-        const form = event.target;
-        const title = form.title.value;
-        const details = form.details.value;
+
         const task = {
             title,
             userEmail: user.email,
             details,
             done: false,
-            comments:[],
+            comments: '',
             image
         }
+        console.log(task);
         fetch(`https://task-manager-v2-server.vercel.app/task`, {
             method: 'POST',
             headers: {
@@ -39,7 +43,7 @@ const AddTask = () => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                form.reset()
+
                 setPreviewImg(undefined)
                 navigate('/')
 
@@ -49,6 +53,8 @@ const AddTask = () => {
 
     }
 
+
+   
 
     useEffect(() => {
         if (fileList?.target?.files[0]) {
@@ -82,10 +88,31 @@ const AddTask = () => {
 
     }, [fileList?.target?.files, imgHostKey])
 
+
+    
+
+  
+    const handletitleInput = e => {
+        e.preventDefault()
+        const title = e.target.value
+        console.log(title)
+        setTile(title)
+    }
+
+
+    const handledetailsInput = e => {
+        e.preventDefault()
+        const details = e.target.value
+        console.log(details)
+        setDetails(details)
+    }
+
     // useEffect(() => {
     //     const listener = event => {
     //       if (event.code === "Enter" || event.code === "NumpadEnter") {           
-    //         handleform()
+    //         // event.preventDefault()
+    //           handleform(event)
+    //         //   console.log(title,details)
     //       }
     //     };
     //     document.addEventListener("keydown", listener);
@@ -125,9 +152,9 @@ const AddTask = () => {
                                 </>
                         }
                         <p className='font-semibold text-sm mt-2 text-white'>Tittle</p>
-                        <input required name='title' className='my-2 p-2 rounded text-gray-900 font-semibold shadow-md' type="text" placeholder='Add a Title' />
+                        <input  required onChange={handletitleInput}  name='title' className='my-2 p-2 rounded text-gray-900 font-semibold shadow-md' type="text" placeholder='Add a Title' />
                         <p className='font-semibold text-sm mt-2 text-white'>Details</p>
-                        <textarea name='details' className='my-2 p-2 text-gray-900 font-semibold rounded shadow-md' id="" placeholder='Add Some Details'></textarea>
+                        <textarea onChange={handledetailsInput} name='details' className='my-2 p-2 text-gray-900 font-semibold rounded shadow-md' id="" placeholder='Add Some Details'></textarea>
                         {
                             animation ?
                                 <>
@@ -137,7 +164,7 @@ const AddTask = () => {
                                 </>
                                 :
                                 <>
-                                    <button type='submit' className='px-4 py-2 my-2 bg-blue-600 text-white rounded'>Add</button>
+                                    <button type='submit'  className='px-4 py-2 my-2 bg-blue-600 text-white rounded'>Add</button>
                                 </>
                         }
                     </div>
